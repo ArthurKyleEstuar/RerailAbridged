@@ -11,10 +11,14 @@ public class CameraFollow : MonoBehaviour
     private void Start()
     {
         offSet.z = this.transform.position.z;
+
+        if (target == null) Debug.LogError("No camera target assigned!");
     }
 
     private void FixedUpdate()
     {
+        if (target == null) return;
+
         this.transform.position = target.transform.position + offSet;
     }
 }

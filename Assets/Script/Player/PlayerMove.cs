@@ -10,21 +10,43 @@ public class PlayerMove : MonoBehaviour
     [SerializeField] private Vector2 speedCap = new Vector2(-10, 10);
     [SerializeField] private Rigidbody2D rb;
 
+    private PlayerInputAction inputAction;
+    private Vector2 moveInput;
     private float currSpeed;
     private float currAccel;
     private float dir;
+	[SerializeField] private bool canMove = true;
 
     public float CurrSpeed { get { return currSpeed; } }
+
+    #region Init
+    private void Awake()
+    {
+        inputAction = new PlayerInputAction();
+        inputAction.PlayerControls.Move.performed += ctx => moveInput = ctx.ReadValue<Vector2>();
+    }
+
+    private void OnEnable()
+    {
+        inputAction.Enable();
+    }
+
+    private void OnDisable()
+    {
+        inputAction.Disable();
+    }
 
     private void Start()
     {
         currAccel = acceleration;
     }
+    #endregion
 
     private void FixedUpdate()
     {
-        float input = Input.GetAxis("Horizontal");
-        if (input == 0)
+        float input = moveInput.x;
+
+        if (input == 0) //deccelerate toward 0
         {
             dir = 0;
 
@@ -35,23 +57,23 @@ public class PlayerMove : MonoBehaviour
             else
                 currSpeed = 0;
         }
-        else if (input > 0)
+        else
         {
-            dir = 1;
-            currSpeed += GetForce();
-        }
-        else if (input < 0)
-        {
-            dir = -1;
+            dir = (input > 0) ? 1 : -1;
             currSpeed += GetForce();
         }
 
         currSpeed = Mathf.Clamp(currSpeed, speedCap.x, speedCap.y);
-
         if (rb == null) return;
+
+        //Stop moving when disabled
+        if (!canMove)
+            currSpeed = 0;
+
         rb.velocity = new Vector2(currSpeed, 0);
     }
 
+    #region Calculations
     private float GetForce()
     {
         return Time.deltaTime * currAccel * dir;
@@ -61,7 +83,9 @@ public class PlayerMove : MonoBehaviour
     {
         return Time.deltaTime * currAccel;
     }
+    #endregion
 
+    #region Accel methods
     public void SetAcceleration(float newAccel)
     {
         currAccel = newAccel;
@@ -71,4 +95,32 @@ public class PlayerMove : MonoBehaviour
     {
         currAccel = acceleration;
     }
+    #endregion
+
+    #region Move Allow/Deny
+    public void StopImmediately()
+	{
+		currAccel = 0;
+		currSpeed = 0;
+	}
+
+    public void AllowMove()
+    {
+        canMove = true;
+    }
+
+    public void StopMove(float duration)
+	{
+        canMove = false;
+
+        if (duration <= 0) return; //Skip the CR when no valid duration set
+        StartCoroutine(TempRestrictMoveCR(duration));
+	}
+
+    private IEnumerator TempRestrictMoveCR(float duration)
+    {
+        yield return new WaitForSeconds(duration);
+        canMove = true;
+    }
+    #endregion
 }
