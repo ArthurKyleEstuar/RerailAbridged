@@ -5,11 +5,15 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField] private PlayerMove playerMove;
-    [SerializeField] private PlayerAnim playerAnim;
-    [SerializeField] private float repairDuration = 0.3f;
+    [Header("Components")]
+    [SerializeField] private PlayerMove     playerMove;
+    [SerializeField] private PlayerAnim     playerAnim;
 
-    private PlayerInputAction inputAction;
+    [Header("Anim timer")]
+    [SerializeField] private float          repairDuration = 0.3f;
+
+    private PlayerInputAction   inputAction;
+    private Track               overlappedTrack;
 
     private void Awake()
     {
@@ -27,6 +31,22 @@ public class PlayerController : MonoBehaviour
         inputAction.Disable();
     }
 
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if(collision.gameObject.tag == "Track")
+        {
+            Track track = collision.gameObject.GetComponent<Track>();
+
+            overlappedTrack = track;
+        }
+    }
+
+    public void SetOverlappingTrack(Track track)
+    {
+        overlappedTrack = track;
+    }
+
+    #region Repair Logic
     private void Repair(InputAction.CallbackContext obj)
     {
         if (!obj.performed || playerMove == null) return;
@@ -40,8 +60,12 @@ public class PlayerController : MonoBehaviour
         if (playerAnim == null) yield break;
 
         playerAnim.SetAnimBool("isRepair", true, repairDuration);
+
         yield return new WaitForSeconds(repairDuration / 2);
-        //TODO Get overlapped track and fix it
-        Debug.Log("Repair Track");
+
+        if (overlappedTrack != null)
+            overlappedTrack.RepairTrack();
     }
+
+    #endregion
 }

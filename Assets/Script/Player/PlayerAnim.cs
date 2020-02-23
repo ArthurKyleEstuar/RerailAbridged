@@ -5,12 +5,10 @@ using UnityEngine;
 public class PlayerAnim : MonoBehaviour
 {
     [SerializeField] private PlayerMove playerMove;
-    [SerializeField] private Animator animator;
+    [SerializeField] private Animator   animator;
 
-    private bool isMovingRight;
-    Vector3 newRot = Vector3.zero;
-
-    private const float animAllowance = 0.2f;
+    private bool    isMovingRight;
+    Vector3         newRot          = Vector3.zero;
 
     private void FixedUpdate()
     {

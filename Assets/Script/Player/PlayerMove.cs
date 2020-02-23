@@ -4,18 +4,26 @@ using UnityEngine;
 
 public class PlayerMove : MonoBehaviour
 {
-    [SerializeField] private float playerSpeed = 10.0f;
-    [SerializeField] private float acceleration = 5.0f;
-    [SerializeField] private float allowance = 0.4f;
-    [SerializeField] private Vector2 speedCap = new Vector2(-10, 10);
-    [SerializeField] private Rigidbody2D rb;
+    [Header("Scene Components")]
+    [SerializeField] private Rigidbody2D    rb;
+
+    [Header("Move Parameters")]
+    [SerializeField] private float          playerSpeed     = 10.0f;
+    [SerializeField] private float          acceleration    = 5.0f;
+    [SerializeField] private float          deccelAllowance = 0.4f;
+
+    [Header("Limit")]    
+    [SerializeField] private Vector2        speedCap        = new Vector2(-10, 10);
+    
+    [Header("Move State")]
+    [SerializeField] private bool           canMove         = true;
 
     private PlayerInputAction inputAction;
     private Vector2 moveInput;
     private float currSpeed;
     private float currAccel;
     private float dir;
-	[SerializeField] private bool canMove = true;
+	
 
     public float CurrSpeed { get { return currSpeed; } }
 
@@ -50,9 +58,9 @@ public class PlayerMove : MonoBehaviour
         {
             dir = 0;
 
-            if (currSpeed > allowance)
+            if (currSpeed > deccelAllowance)
                 currSpeed -= GetDeccelerate();
-            else if (currSpeed < -allowance)
+            else if (currSpeed < -deccelAllowance)
                 currSpeed += GetDeccelerate();
             else
                 currSpeed = 0;

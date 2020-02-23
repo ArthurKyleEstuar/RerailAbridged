@@ -330,7 +330,7 @@ MonoBehaviour:
   trackPrefab: {fileID: 4623665055688630524, guid: 0fa11aa999b140d489e76b6e151c2c47,
     type: 3}
   trackSize: 3.2
-  trackCount: 30
+  trackCount: 1
 --- !u!4 &845080977
 Transform:
   m_ObjectHideFlags: 0
@@ -339,7 +339,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 845080975}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -26.57, y: -6.4, z: 0}
+  m_LocalPosition: {x: -0.04, y: -6.4, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -619,7 +619,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!50 &1831679609
 Rigidbody2D:
   serializedVersion: 4
@@ -763,6 +763,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rb: {fileID: 1831679609}
   trainSpeed: 7
+  launchRotRange: {x: -180, y: 180}
+  minLaunchForce: {x: -200, y: 500}
+  maxLaunchForce: {x: 200, y: 1500}
 --- !u!1 &1848058179
 GameObject:
   m_ObjectHideFlags: 0
@@ -907,9 +910,10 @@ GameObject:
   - component: {fileID: 2063954574}
   - component: {fileID: 2063954571}
   - component: {fileID: 2063954570}
-  m_Layer: 0
+  - component: {fileID: 2063954577}
+  m_Layer: 10
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -990,7 +994,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2063954569}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -5, z: -1.5}
+  m_LocalPosition: {x: 0, y: -5.43, z: -1.5}
   m_LocalScale: {x: 5, y: 5, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -1008,11 +1012,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 367a18b6c1ebb0b4a8c161b71804a7ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rb: {fileID: 2063954574}
   playerSpeed: 10
   acceleration: 500
-  allowance: 0.41
+  deccelAllowance: 0.4
   speedCap: {x: -20, y: 20}
-  rb: {fileID: 2063954574}
   canMove: 1
 --- !u!50 &2063954574
 Rigidbody2D:
@@ -1064,3 +1068,29 @@ MonoBehaviour:
   playerMove: {fileID: 2063954573}
   playerAnim: {fileID: 2063954575}
   repairDuration: 0.3
+--- !u!61 &2063954577
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2063954569}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0.15999591}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 0.64, y: 0.64}
+    newSize: {x: 0.64, y: 0.64}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 0.64, y: 0.32000816}
+  m_EdgeRadius: 0

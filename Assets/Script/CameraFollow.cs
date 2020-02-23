@@ -4,9 +4,12 @@ using UnityEngine;
 
 public class CameraFollow : MonoBehaviour
 {
+    [Header("Target Ref")]
     [SerializeField] private GameObject target;
-    [SerializeField] private Vector3 offSet = new Vector3(0, 20, 0);
-    [SerializeField] private bool lockZ = true;
+
+    [Header("Position Offset")]
+    [SerializeField] private Vector3    offSet  = new Vector3(0, 20, 0);
+    [SerializeField] private bool       lockZ   = true;
 
     private void Start()
     {
