@@ -6,6 +6,7 @@ public class Train : MonoBehaviour
 {
     [Header("Components")]
     [SerializeField] private Rigidbody2D    rb;
+    [SerializeField] private TrainSafeZone  trainSafeZone;
 
     [Header("Movement")]
     [SerializeField] private float          trainSpeed      = 10.0f;
@@ -14,7 +15,13 @@ public class Train : MonoBehaviour
     [SerializeField] private Vector2        launchRotRange  = new Vector2(-180, 180);
     [SerializeField] private Vector2        minLaunchForce  = new Vector2(-200, 500);
     [SerializeField] private Vector2        maxLaunchForce  = new Vector2(200, 1500);
+
+    [Header("Train status")]
+    [SerializeField] private bool isFirstTrain  = false;
+    [SerializeField] private bool isLastTrain   = false;
+
     private Vector3 currPos;
+
     private float   rotRate;
     private bool    isBroke = false;
 
@@ -33,6 +40,13 @@ public class Train : MonoBehaviour
 
             this.transform.localEulerAngles = newRot;
         }
+    }
+
+    public void Initialize()
+    {
+        if (trainSafeZone == null) return;
+
+        trainSafeZone.Initialize(isFirstTrain, isLastTrain);
     }
 
     public void LaunchTrain()
