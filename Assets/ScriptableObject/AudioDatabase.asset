@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b15d418fdb02f754787136da4017602a, type: 3}
+  m_Name: AudioDatabase
+  m_EditorClassIdentifier: 
+  data:
+  - id: BGM
+    audioClip: {fileID: 8300000, guid: e93c42fe9a3af034d8835cace5a7eba3, type: 3}
+    isLooping: 1
+    mixGroup: BGM
+    volume: 1

@@ -42,11 +42,14 @@ public class Train : MonoBehaviour
         }
     }
 
-    public void Initialize()
+    public void Initialize(bool isFirstTrain = false, bool isLastTrain = false)
     {
         if (trainSafeZone == null) return;
 
         trainSafeZone.Initialize(isFirstTrain, isLastTrain);
+
+        //TEMP MUST REMOVE LATER
+        Destroy(this.gameObject, 30.0f);
     }
 
     public void LaunchTrain()
