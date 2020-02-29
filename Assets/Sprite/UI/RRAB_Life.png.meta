@@ -1,10 +1,13 @@
 fileFormatVersion: 2
-guid: d974f238528af26408cedf4b3aa8ba9e
+guid: b08d91d2ed26d64469fad27c18efa6ab
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 3580923740732255774
-    second: rail_leftcliff_0
+      213: 2916810929882096875
+    second: RRAB_Life_0
+  - first:
+      213: -1759195439187192577
+    second: RRAB_Life_1
   externalObjects: {}
   serializedVersion: 10
   mipmaps:
@@ -109,13 +112,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: rail_leftcliff_0
+      name: RRAB_Life_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 256
-        height: 59
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -123,8 +126,29 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 90dafb70fa0504a4baf5427c3829fc98
-      internalID: 3580923740732255774
+      spriteID: dc26ae3041cab3f4ab19656fd4ed2ae8
+      internalID: 2916810929882096875
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RRAB_Life_1
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 0
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 707f60a95a393964d903346aac3d84b0
+      internalID: -1759195439187192577
       vertices: []
       indices: 
       edges: []
@@ -132,7 +156,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 2fd358cecbc659e4693f60afa097c84d
+    spriteID: a976033d2c8d056439909547ec06cb6b
     internalID: 0
     vertices: []
     indices: 

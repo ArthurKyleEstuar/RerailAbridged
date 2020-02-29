@@ -4,15 +4,17 @@ using UnityEngine;
 
 public class TrainSpawner : MonoBehaviour
 {
+    [SerializeField] private GameSceneController    gameController;
+
     [Header("Spawn Timing")]
-    [SerializeField] private Vector2            spawnDelay      = new Vector2(10.0f, 15.0f);
+    [SerializeField] private Vector2                spawnDelay      = new Vector2(10.0f, 15.0f);
     
     [Header("Spawn Parameters")]
-    [SerializeField] private int                maxTrainSetSize = 3;
-    [SerializeField] private float              zSpawn          = -1.0f;
+    [SerializeField] private int                    maxTrainSetSize = 3;
+    [SerializeField] private float                  zSpawn          = -1.0f;
 
     [Header("SpawnObjects")]
-    [SerializeField] private List<GameObject>   trainPrefabs    = new List<GameObject>();
+    [SerializeField] private List<GameObject>       trainPrefabs    = new List<GameObject>();
 
     private const float TRAIN_SIZE      = 6.63f;
 
@@ -66,7 +68,7 @@ public class TrainSpawner : MonoBehaviour
 
             if (t == null) continue;
 
-            t.Initialize(i == 0, i == spawnSize - 1);
+            t.Initialize(gameController, i == 0, i == spawnSize - 1);
         }
     }
 }

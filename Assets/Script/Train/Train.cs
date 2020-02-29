@@ -17,13 +17,15 @@ public class Train : MonoBehaviour
     [SerializeField] private Vector2        maxLaunchForce  = new Vector2(200, 1500);
 
     [Header("Train status")]
-    [SerializeField] private bool isFirstTrain  = false;
-    [SerializeField] private bool isLastTrain   = false;
+    [SerializeField] private bool           isFirstTrain  = false;
+    [SerializeField] private bool           isLastTrain   = false;
 
-    private Vector3 currPos;
+    private Vector3             currPos;
 
-    private float   rotRate;
-    private bool    isBroke = false;
+    private float               rotRate;
+    private bool                isBroke = false;
+
+    private GameSceneController gameController;
 
     private void FixedUpdate()
     {
@@ -42,19 +44,21 @@ public class Train : MonoBehaviour
         }
     }
 
-    public void Initialize(bool isFirstTrain = false, bool isLastTrain = false)
+    public void Initialize(GameSceneController gc, bool isFirstTrain = false, bool isLastTrain = false)
     {
         if (trainSafeZone == null) return;
 
-        trainSafeZone.Initialize(isFirstTrain, isLastTrain);
+        gameController = gc;
 
-        //TEMP MUST REMOVE LATER
-        Destroy(this.gameObject, 30.0f);
+        trainSafeZone.Initialize(isFirstTrain, isLastTrain);
     }
 
     public void LaunchTrain()
     {
         isBroke = true;
+
+        if (gameController != null)
+            gameController.IncrementLostTrains();
 
         float xLaunchForce = Random.Range(minLaunchForce.x, maxLaunchForce.x);
         float yLaunchForce = Random.Range(minLaunchForce.y, maxLaunchForce.y);
@@ -66,5 +70,10 @@ public class Train : MonoBehaviour
 
         if (rb != null)
             rb.AddForce(randomForce);
+    }
+
+    public void DeleteTrain(float delay = 2.0f)
+    {
+        Destroy(this.gameObject, delay);
     }
 }
