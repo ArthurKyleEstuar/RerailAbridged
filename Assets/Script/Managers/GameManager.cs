@@ -8,7 +8,7 @@ public class GameManager : BaseManager<GameManager>
 
     private void Start()
     {
-        AudioManager.Manager.PlayAudio("BGM");
+        //AudioManager.Manager.PlayAudio("BGM");
     }
 
     public Sprite GetRandomBG()
