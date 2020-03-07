@@ -4,17 +4,15 @@ using UnityEngine;
 
 public class HUDController : MonoBehaviour
 {
-    [SerializeField] private GameObject player;
-    [SerializeField] private TrackManager trackManager;
+    [SerializeField] private GameObject     player;
+    [SerializeField] private TrackManager   trackManager;
 
     [Header("Check intervals")]
-    [SerializeField] private float checkInterval = 1.0f;
+    [SerializeField] private float          checkInterval   = 1.0f;
 
     [Header("Break Notifs")]
-    [SerializeField] private GameObject leftBreakNotif;
-    [SerializeField] private GameObject rightBreakNotif;
-
-    private float currInterval;
+    [SerializeField] private GameObject     leftBreakNotif;
+    [SerializeField] private GameObject     rightBreakNotif;
 
     private void Start()
     {
