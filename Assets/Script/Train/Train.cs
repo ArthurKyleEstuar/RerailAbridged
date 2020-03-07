@@ -16,10 +16,6 @@ public class Train : MonoBehaviour
     [SerializeField] private Vector2        minLaunchForce  = new Vector2(-200, 500);
     [SerializeField] private Vector2        maxLaunchForce  = new Vector2(200, 1500);
 
-    [Header("Train status")]
-    [SerializeField] private bool           isFirstTrain  = false;
-    [SerializeField] private bool           isLastTrain   = false;
-
     private Vector3             currPos;
 
     private float               rotRate;

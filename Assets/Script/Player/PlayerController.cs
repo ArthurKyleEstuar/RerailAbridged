@@ -33,7 +33,7 @@ public class PlayerController : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if(collision.gameObject.tag == "Track")
+        if (collision.gameObject.tag == "Track")
         {
             Track track = collision.gameObject.GetComponent<Track>();
 
@@ -66,6 +66,5 @@ public class PlayerController : MonoBehaviour
         if (overlappedTrack != null)
             overlappedTrack.RepairTrack();
     }
-
     #endregion
 }
