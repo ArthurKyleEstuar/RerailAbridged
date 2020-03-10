@@ -212,7 +212,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &240355963
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -550,7 +550,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bgPrefab: {fileID: 2819141373473298407, guid: c0c3a13bf55bc8e4090c5ecc9aaf3e6b,
     type: 3}
-  bgCount: 5
+  bgCount: 7
   bgSize: 51.2
   bgScale: 10
 --- !u!4 &612634462
