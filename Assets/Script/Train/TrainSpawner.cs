@@ -51,16 +51,20 @@ public class TrainSpawner : MonoBehaviour
 
     private void SpawnTrain()
     {
-        int spawnSize = (int)Random.Range(1.0f, maxTrainSetSize);
+        int spawnSize = Random.Range(1, maxTrainSetSize + 1);
 
         for (int i = 0; i < spawnSize; i++)
         {
             float spawnX = this.transform.position.x - (TRAIN_SIZE * i);
+            int spawnIndex = 0;
 
             Vector3 spawnPos = this.transform.position;
             spawnPos.x = spawnX;
 
-            GameObject go = Instantiate(trainPrefabs[0]
+            if (i != 0)
+                spawnIndex = Random.Range(1, trainPrefabs.Count);
+
+            GameObject go = Instantiate(trainPrefabs[spawnIndex]
                 , spawnPos
                 , Quaternion.identity);
 

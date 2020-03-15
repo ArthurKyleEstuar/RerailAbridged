@@ -211,7 +211,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!114 &240355963
 MonoBehaviour:
@@ -231,6 +231,9 @@ MonoBehaviour:
   zSpawn: -1
   trainPrefabs:
   - {fileID: 3276359698201222564, guid: cbb924a7d4de92b4d9ab952ece4e09c9, type: 3}
+  - {fileID: 3244194186235730086, guid: 6d1b4028bd9ec41448030404146e6cbc, type: 3}
+  - {fileID: 792152837508905735, guid: 75de11b448e95f0469e6038b256db127, type: 3}
+  - {fileID: 4410006296973699968, guid: 025d5c9b5053b6748b0b9dcb0fe2fb49, type: 3}
 --- !u!4 &240355964
 Transform:
   m_ObjectHideFlags: 0
@@ -1471,6 +1474,7 @@ MonoBehaviour:
   currScoreText: {fileID: 1371114468}
   trainsLostText: {fileID: 1759435168}
   maxTrainsLost: 5
+  gameOverDelay: 1.5
 --- !u!114 &1848058186
 MonoBehaviour:
   m_ObjectHideFlags: 0

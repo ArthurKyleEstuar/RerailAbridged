@@ -4,9 +4,13 @@ using UnityEngine;
 using TMPro;
 public class GameSceneController : MonoBehaviour
 {
+    [Header("Text Reference")]
     [SerializeField] private TextMeshProUGUI    currScoreText;
     [SerializeField] private TextMeshProUGUI    trainsLostText;
+
+    [Header("Game Over Parameters")]
     [SerializeField] private int                maxTrainsLost   = 5;
+    [SerializeField] private float              gameOverDelay = 1.5f;
 
     private int currScore   = 0;
     private int trainsLost  = 0;
@@ -34,5 +38,20 @@ public class GameSceneController : MonoBehaviour
 
         if (trainsLostText != null)
             trainsLostText.text = trainsLost.ToString() + "/" + maxTrainsLost.ToString();
+
+        if (HasLostGame())
+            StartCoroutine(DelayGameOverCR());
+    }
+
+    private bool HasLostGame()
+    {
+        return trainsLost >= maxTrainsLost;
+    }
+
+    private IEnumerator DelayGameOverCR()
+    {
+        yield return new WaitForSeconds(gameOverDelay);
+
+        SceneManage.OpenSingleScene("GameOver");
     }
 }
