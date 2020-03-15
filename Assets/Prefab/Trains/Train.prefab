@@ -53,12 +53,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rb: {fileID: 6178743952716179616}
   trainSafeZone: {fileID: 1444143963548901177}
+  sr: {fileID: 6999638083262832692}
   trainSpeed: 7
   launchRotRange: {x: -180, y: 180}
   minLaunchForce: {x: -200, y: 500}
   maxLaunchForce: {x: 200, y: 1500}
-  isFirstTrain: 1
-  isLastTrain: 1
 --- !u!212 &6999638083262832692
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -225,6 +224,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63b5a1f52d2b352418ddfc469b9a98ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isFirstTrain: 0
+  isLastTrain: 0
 --- !u!61 &7298939300308677460
 BoxCollider2D:
   m_ObjectHideFlags: 0

@@ -68,8 +68,8 @@ public class Train : MonoBehaviour
             rb.AddForce(randomForce);
     }
 
-    public void DeleteTrain(float delay = 2.0f)
+    public void DeleteTrain(float destroyDelay = 2.0f)
     {
-        Destroy(this.gameObject, delay);
+        Destroy(this.gameObject, destroyDelay);
     }
 }

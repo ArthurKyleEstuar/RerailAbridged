@@ -36,6 +36,7 @@ public class TrackManager : MonoBehaviour
         Vector3 initPos = this.transform.position;
         initPos.y += heightOffset;
         GameObject initTrack = Instantiate(trackEndPrefab, initPos, Quaternion.identity);
+        initTrack.transform.parent = this.transform;
         
         //Spawn the middle tracks
         for(int i = 0; i < trackCount; i++)
@@ -60,6 +61,7 @@ public class TrackManager : MonoBehaviour
 
         GameObject endTrack = Instantiate(trackEndPrefab, endPos, Quaternion.identity);
         endTrack.transform.localEulerAngles = new Vector3(0, 180, 0);
+        endTrack.transform.parent = this.transform;
 
         TrackEnd trackEnd = Utilities.GetComponentDeep<TrackEnd>(endTrack);
 
