@@ -58,6 +58,8 @@ MonoBehaviour:
   launchRotRange: {x: -180, y: 180}
   minLaunchForce: {x: -200, y: 500}
   maxLaunchForce: {x: 200, y: 1500}
+  offScreenChance: 20
+  yOffscreenForce: 1900
 --- !u!212 &6999638083262832692
 SpriteRenderer:
   m_ObjectHideFlags: 0

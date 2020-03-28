@@ -1475,6 +1475,10 @@ MonoBehaviour:
   trainsLostText: {fileID: 1759435168}
   maxTrainsLost: 5
   gameOverDelay: 1.5
+  offScreenPrefab: {fileID: 2176943186254540028, guid: 7af165445c86f994c833ddae2c6f43ff,
+    type: 3}
+  offScreenSpawnHeight: 10
+  offScreenSpawnDelay: 1
 --- !u!114 &1848058186
 MonoBehaviour:
   m_ObjectHideFlags: 0

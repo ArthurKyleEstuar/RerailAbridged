@@ -7,6 +7,7 @@ public class Train : MonoBehaviour
     [Header("Components")]
     [SerializeField] private Rigidbody2D    rb;
     [SerializeField] private TrainSafeZone  trainSafeZone;
+    [SerializeField] private SpriteRenderer sr;
 
     [Header("Movement")]
     [SerializeField] private float          trainSpeed      = 10.0f;
@@ -16,12 +17,14 @@ public class Train : MonoBehaviour
     [SerializeField] private Vector2        minLaunchForce  = new Vector2(-200, 500);
     [SerializeField] private Vector2        maxLaunchForce  = new Vector2(200, 1500);
 
-    private Vector3             currPos;
+    [Header("Offscreen Launch Properties")]
+    [SerializeField] private float          offScreenChance = 20.0f;
+    [SerializeField] private float          yOffscreenForce = 1900.0f;
 
-    private float               rotRate;
-    private bool                isBroke = false;
-
-    private GameSceneController gameController;
+    private Vector3                         currPos;
+    private float                           rotRate;
+    private bool                            isBroke         = false;
+    private GameSceneController             gameController;
 
     private void FixedUpdate()
     {
@@ -53,13 +56,16 @@ public class Train : MonoBehaviour
     {
         isBroke = true;
 
-        if (gameController != null)
-            gameController.IncrementLostTrains();
+        float offScreenRoll = Random.Range(0, 100);
+        bool isOffscreenLaunch = offScreenRoll <= offScreenChance;
 
-        float xLaunchForce = Random.Range(minLaunchForce.x, maxLaunchForce.x);
-        float yLaunchForce = Random.Range(minLaunchForce.y, maxLaunchForce.y);
+        if (gameController != null && sr != null)
+            gameController.HandleLostTrain(sr.sprite
+                , isOffscreenLaunch
+                , this.transform.position.x);
 
-        Vector2 randomForce = new Vector2(xLaunchForce, yLaunchForce);
+        Vector2 randomForce = GetLaunchForce(isOffscreenLaunch);
+
         rotRate = Random.Range(launchRotRange.x, launchRotRange.y);
 
         this.gameObject.layer = 9;
@@ -71,5 +77,18 @@ public class Train : MonoBehaviour
     public void DeleteTrain(float destroyDelay = 2.0f)
     {
         Destroy(this.gameObject, destroyDelay);
+    }
+
+    private Vector2 GetLaunchForce(bool isOffScreen)
+    {
+        float xForce = 0;
+        float yForce = 0;
+
+        if (isOffScreen)
+            yForce = yOffscreenForce;
+        else
+            yForce = Random.Range(minLaunchForce.y, maxLaunchForce.y);
+
+        return new Vector2(xForce, yForce);
     }
 }
