@@ -17,4 +17,9 @@ public class ButtonFunc : MonoBehaviour
         Application.Quit();
 #endif
     }
+
+    public void OpenLink(string url)
+    {
+        Application.OpenURL(url);
+    }
 }
