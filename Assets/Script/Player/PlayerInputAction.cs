@@ -33,6 +33,14 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Pickup"",
+                    ""type"": ""Button"",
+                    ""id"": ""62498bef-08ac-47b2-bb7f-e1cd39db39de"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -112,6 +120,17 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
                     ""action"": ""Repair"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8a2acaf0-a781-411b-bb1d-1deb100da98b"",
+                    ""path"": ""<Keyboard>/f"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pickup"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -122,6 +141,7 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
         m_PlayerControls = asset.FindActionMap("PlayerControls", throwIfNotFound: true);
         m_PlayerControls_Move = m_PlayerControls.FindAction("Move", throwIfNotFound: true);
         m_PlayerControls_Repair = m_PlayerControls.FindAction("Repair", throwIfNotFound: true);
+        m_PlayerControls_Pickup = m_PlayerControls.FindAction("Pickup", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -173,12 +193,14 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
     private IPlayerControlsActions m_PlayerControlsActionsCallbackInterface;
     private readonly InputAction m_PlayerControls_Move;
     private readonly InputAction m_PlayerControls_Repair;
+    private readonly InputAction m_PlayerControls_Pickup;
     public struct PlayerControlsActions
     {
         private @PlayerInputAction m_Wrapper;
         public PlayerControlsActions(@PlayerInputAction wrapper) { m_Wrapper = wrapper; }
         public InputAction @Move => m_Wrapper.m_PlayerControls_Move;
         public InputAction @Repair => m_Wrapper.m_PlayerControls_Repair;
+        public InputAction @Pickup => m_Wrapper.m_PlayerControls_Pickup;
         public InputActionMap Get() { return m_Wrapper.m_PlayerControls; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -194,6 +216,9 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
                 @Repair.started -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnRepair;
                 @Repair.performed -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnRepair;
                 @Repair.canceled -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnRepair;
+                @Pickup.started -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnPickup;
+                @Pickup.performed -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnPickup;
+                @Pickup.canceled -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnPickup;
             }
             m_Wrapper.m_PlayerControlsActionsCallbackInterface = instance;
             if (instance != null)
@@ -204,6 +229,9 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
                 @Repair.started += instance.OnRepair;
                 @Repair.performed += instance.OnRepair;
                 @Repair.canceled += instance.OnRepair;
+                @Pickup.started += instance.OnPickup;
+                @Pickup.performed += instance.OnPickup;
+                @Pickup.canceled += instance.OnPickup;
             }
         }
     }
@@ -212,5 +240,6 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
     {
         void OnMove(InputAction.CallbackContext context);
         void OnRepair(InputAction.CallbackContext context);
+        void OnPickup(InputAction.CallbackContext context);
     }
 }

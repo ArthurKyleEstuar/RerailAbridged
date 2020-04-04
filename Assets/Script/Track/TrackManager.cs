@@ -26,7 +26,15 @@ public class TrackManager : MonoBehaviour
 
     private void Start()
     {
-        if(trackPrefab == null || trackEndPrefab == null)
+        SpawnTracks();
+
+        StartCoroutine(RandomBreakCR());
+    }
+
+    [ContextMenu("Spawn Track")]
+    private void SpawnTracks()
+    {
+        if (trackPrefab == null || trackEndPrefab == null)
         {
             Debug.LogError("Track prefab missing!");
             return;
@@ -37,9 +45,9 @@ public class TrackManager : MonoBehaviour
         initPos.y += heightOffset;
         GameObject initTrack = Instantiate(trackEndPrefab, initPos, Quaternion.identity);
         initTrack.transform.parent = this.transform;
-        
+
         //Spawn the middle tracks
-        for(int i = 0; i < trackCount; i++)
+        for (int i = 0; i < trackCount; i++)
         {
             Vector3 spawnPos = this.transform.position;
             spawnPos.x = spawnPos.x + endSize + (i * trackSize);
@@ -67,8 +75,6 @@ public class TrackManager : MonoBehaviour
 
         if (trackEnd != null)
             trackEnd.Initialize(true, gameController);
-
-        StartCoroutine(RandomBreakCR());
     }
 
     private IEnumerator RandomBreakCR()
