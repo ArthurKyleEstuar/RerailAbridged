@@ -19,7 +19,7 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
-        inputAction = new PlayerInputAction();
+        inputAction = GameManager.Manager.InputActions;
         inputAction.PlayerControls.Repair.performed += StartRepair;
     }
 

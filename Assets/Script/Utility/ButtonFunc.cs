@@ -22,4 +22,14 @@ public class ButtonFunc : MonoBehaviour
     {
         Application.OpenURL(url);
     }
+
+    public void ClearPlayerBindings()
+    {
+        GameManager.Manager.ResetPlayerBindings();
+    }
+
+    public void SavePlayerBindings()
+    {
+        GameManager.Manager.SavePlayerBindings();
+    }
 }
