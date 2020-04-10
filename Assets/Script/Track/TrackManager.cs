@@ -5,6 +5,7 @@ using UnityEngine;
 public class TrackManager : MonoBehaviour
 {
     [SerializeField] private GameSceneController    gameController;
+    [SerializeField] private ItemDatabase           toolDB;
 
     [Header("Prefab")]
     [SerializeField] private GameObject             trackPrefab;
@@ -20,9 +21,12 @@ public class TrackManager : MonoBehaviour
     [SerializeField] private float                  breakInterval   = 5.0f;
 
     private List<Track> tracks          = new List<Track>();
-    [SerializeField] private List<Track> damagedTracks   = new List<Track>();
+    private List<Track> damagedTracks   = new List<Track>();
 
-    public List<Track> DamagedTracks { get { return damagedTracks; } }
+    public List<Track> DamagedTracks    { get { return damagedTracks; } }
+    public ItemDatabase ToolDB          { get { return toolDB; } }
+
+    public static System.Action<bool> OnInvalidToolUsed;
 
     private void Start()
     {
@@ -98,5 +102,9 @@ public class TrackManager : MonoBehaviour
         damagedTracks.Remove(track);
     }
     
+    public void InvalidToolUsed()
+    {
+        if (OnInvalidToolUsed != null) OnInvalidToolUsed(true);
+    }
   
 }

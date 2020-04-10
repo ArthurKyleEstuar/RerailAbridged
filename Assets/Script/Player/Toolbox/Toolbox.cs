@@ -1,12 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using TMPro;
 public class Toolbox : MonoBehaviour
 {
     [SerializeField] private GameObject toolboxHUD;
 
     private bool inInteractRange;
+
+    public static System.Action<bool> OnOverlap;
 
     private void OnEnable()
     {
@@ -22,6 +24,8 @@ public class Toolbox : MonoBehaviour
     {
         if (collision.gameObject.tag == "Player" && toolboxHUD != null)
         {
+            if (OnOverlap != null) OnOverlap(true);
+
             inInteractRange = true;
             toolboxHUD.SetActive(true);
         }
@@ -31,6 +35,8 @@ public class Toolbox : MonoBehaviour
     {
         if (collision.gameObject.tag == "Player" && toolboxHUD != null)
         {
+            if (OnOverlap != null) OnOverlap(false);
+
             inInteractRange = false;
             toolboxHUD.SetActive(false);
         }

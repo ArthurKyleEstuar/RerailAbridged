@@ -41,6 +41,14 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Switch"",
+                    ""type"": ""Value"",
+                    ""id"": ""86ac728f-b342-4bf2-ab19-255342f28531"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -131,6 +139,39 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
                     ""action"": ""Pickup"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""1D Axis"",
+                    ""id"": ""2fff1e4d-6b64-4601-b608-d11195730400"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Switch"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""3a414e1c-c921-47d1-8e6c-88f9c5767fca"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Switch"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""b5d54f84-ebd9-4f80-bb96-b768af10ef1d"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Switch"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         }
@@ -142,6 +183,7 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
         m_PlayerControls_Move = m_PlayerControls.FindAction("Move", throwIfNotFound: true);
         m_PlayerControls_Repair = m_PlayerControls.FindAction("Repair", throwIfNotFound: true);
         m_PlayerControls_Pickup = m_PlayerControls.FindAction("Pickup", throwIfNotFound: true);
+        m_PlayerControls_Switch = m_PlayerControls.FindAction("Switch", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -194,6 +236,7 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
     private readonly InputAction m_PlayerControls_Move;
     private readonly InputAction m_PlayerControls_Repair;
     private readonly InputAction m_PlayerControls_Pickup;
+    private readonly InputAction m_PlayerControls_Switch;
     public struct PlayerControlsActions
     {
         private @PlayerInputAction m_Wrapper;
@@ -201,6 +244,7 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
         public InputAction @Move => m_Wrapper.m_PlayerControls_Move;
         public InputAction @Repair => m_Wrapper.m_PlayerControls_Repair;
         public InputAction @Pickup => m_Wrapper.m_PlayerControls_Pickup;
+        public InputAction @Switch => m_Wrapper.m_PlayerControls_Switch;
         public InputActionMap Get() { return m_Wrapper.m_PlayerControls; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -219,6 +263,9 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
                 @Pickup.started -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnPickup;
                 @Pickup.performed -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnPickup;
                 @Pickup.canceled -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnPickup;
+                @Switch.started -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnSwitch;
+                @Switch.performed -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnSwitch;
+                @Switch.canceled -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnSwitch;
             }
             m_Wrapper.m_PlayerControlsActionsCallbackInterface = instance;
             if (instance != null)
@@ -232,6 +279,9 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
                 @Pickup.started += instance.OnPickup;
                 @Pickup.performed += instance.OnPickup;
                 @Pickup.canceled += instance.OnPickup;
+                @Switch.started += instance.OnSwitch;
+                @Switch.performed += instance.OnSwitch;
+                @Switch.canceled += instance.OnSwitch;
             }
         }
     }
@@ -241,5 +291,6 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
         void OnMove(InputAction.CallbackContext context);
         void OnRepair(InputAction.CallbackContext context);
         void OnPickup(InputAction.CallbackContext context);
+        void OnSwitch(InputAction.CallbackContext context);
     }
 }

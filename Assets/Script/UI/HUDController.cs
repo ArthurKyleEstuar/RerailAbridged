@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using TMPro;
 public class HUDController : MonoBehaviour
 {
     [SerializeField] private GameObject     player;
@@ -14,9 +14,65 @@ public class HUDController : MonoBehaviour
     [SerializeField] private GameObject     leftBreakNotif;
     [SerializeField] private GameObject     rightBreakNotif;
 
+    [Header("Popups")]
+    [SerializeField] private GameObject     invalidToolPopup;
+
+    [Header("Text Reference")]
+    [SerializeField] private TextMeshProUGUI currScoreText;
+    [SerializeField] private TextMeshProUGUI trainsLostText;
+    [SerializeField] private TextMeshProUGUI toolNameText;
+
+    private void Awake()
+    {
+        GameSceneController.OnScoreUpdated  += SetScoreDisplay;
+        GameSceneController.OnTrainLost     += SetTrainsLost;
+        PlayerItemController.OnToolSwitched += SetToolDisplay;
+        TrackManager.OnInvalidToolUsed += SetInvalidToolPopup;
+    }
+
     private void Start()
     {
         StartCoroutine(SetNotifsCR());
+
+        SetInvalidToolPopup(false);
+    }
+
+    public void SetInvalidToolPopup(bool isActive)
+    {
+        if (invalidToolPopup == null) return;
+
+        invalidToolPopup.SetActive(isActive);
+
+        if (isActive)
+            StartCoroutine(DelayHideWrongToolCR());
+    }
+
+    private IEnumerator DelayHideWrongToolCR()
+    {
+        yield return new WaitForSeconds(3);
+
+        SetInvalidToolPopup(false);
+    }
+
+    private void SetScoreDisplay(int score)
+    {
+        if (currScoreText == null) return;
+
+        currScoreText.text = score.ToString();
+    }
+
+    private void SetTrainsLost(string trainLostString)
+    {
+        if (trainsLostText == null) return;
+
+        trainsLostText.text = trainLostString;
+    }
+
+    private void SetToolDisplay(ItemData currTool)
+    {
+        if (toolNameText == null) return;
+
+        toolNameText.text = "Tool Equipped: " + currTool.ItemName;
     }
 
     //Do this by interval to reduce load on Update

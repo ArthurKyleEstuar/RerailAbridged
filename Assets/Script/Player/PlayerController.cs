@@ -6,16 +6,19 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
 {
     [Header("Components")]
-    [SerializeField] private PlayerMove playerMove;
-    [SerializeField] private PlayerAnim playerAnim;
+    [SerializeField] private PlayerMove             playerMove;
+    [SerializeField] private PlayerAnim             playerAnim;
+    [SerializeField] private PlayerItemController   playerItem;
 
     [Header("Anim timer")]
     [SerializeField] private float repairDuration = 0.3f;
 
-    private PlayerInputAction inputAction;
-    private Track overlappedTrack;
+    private PlayerInputAction   inputAction;
+    private Track               overlappedTrack;
 
-    private bool isRepairing = false;
+    private bool                isRepairing = false;
+
+    public static System.Action<ItemData> OnRepairAction;
 
     private void Awake()
     {
@@ -73,8 +76,8 @@ public class PlayerController : MonoBehaviour
     //Called via Animation Event in player_repair
     public void RepairCallback()
     {
-        if (overlappedTrack != null)
-            overlappedTrack.RepairTrack();
+        if (playerItem != null && OnRepairAction != null)
+            OnRepairAction(playerItem.CurrItem);
     }
     #endregion
 }

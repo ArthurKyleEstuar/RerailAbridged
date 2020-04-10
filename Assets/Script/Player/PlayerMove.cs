@@ -30,7 +30,7 @@ public class PlayerMove : MonoBehaviour
     #region Init
     private void Awake()
     {
-        inputAction = new PlayerInputAction();
+        inputAction = GameManager.Manager.InputActions;
         inputAction.PlayerControls.Move.performed += ctx => moveInput = ctx.ReadValue<Vector2>();
     }
 

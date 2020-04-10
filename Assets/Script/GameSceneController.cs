@@ -5,9 +5,7 @@ using UnityEngine.UI;
 using TMPro;
 public class GameSceneController : MonoBehaviour
 {
-    [Header("Text Reference")]
-    [SerializeField] private TextMeshProUGUI    currScoreText;
-    [SerializeField] private TextMeshProUGUI    trainsLostText;
+    [SerializeField] private HUDController      hud;
 
     [Header("Game Over Parameters")]
     [SerializeField] private int                maxTrainsLost   = 5;
@@ -21,29 +19,32 @@ public class GameSceneController : MonoBehaviour
     private int currScore   = 0;
     private int trainsLost  = 0;
 
+    public static System.Action<int> OnScoreUpdated;
+    public static System.Action<string> OnTrainLost;
+
     private void Start()
     {
-        if (currScoreText != null)
-            currScoreText.text = currScore.ToString();
+        if (OnScoreUpdated != null)
+            OnScoreUpdated(currScore);
 
-        if (trainsLostText != null)
-            trainsLostText.text = trainsLost.ToString() + "/" + maxTrainsLost.ToString();
+        if (OnTrainLost != null)
+            OnTrainLost(trainsLost.ToString() + "/" + maxTrainsLost.ToString());
     }
 
     public void IncrementScore(int delta = 1)
     {
         currScore += delta;
 
-        if(currScoreText != null)
-            currScoreText.text = currScore.ToString();
+        if (OnScoreUpdated != null)
+            OnScoreUpdated(currScore);
     }
 
     public void HandleLostTrain(Sprite sprite, bool isOffscreen, float xPos, int delta = 1)
     {
         trainsLost += delta;
 
-        if (trainsLostText != null)
-            trainsLostText.text = trainsLost.ToString() + "/" + maxTrainsLost.ToString();
+        if (OnTrainLost != null)
+            OnTrainLost(trainsLost.ToString() + "/" + maxTrainsLost.ToString());
 
         if (HasLostGame())
             StartCoroutine(DelayGameOverCR());

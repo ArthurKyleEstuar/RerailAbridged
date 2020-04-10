@@ -7,6 +7,7 @@ public enum GameControls
 {
     Repair      = 0,
     Interact    = 1,
+    Switch      = 2,
 }
 
 [System.Serializable]
@@ -32,6 +33,9 @@ public class KeyRebind : MonoBehaviour
 {
     [SerializeField] private GameControls       keyToChange;
     [SerializeField] private TextMeshProUGUI    keyDisplayText;
+    [SerializeField] private bool               isComposite;
+    [SerializeField] private int                compositeId;
+    [SerializeField] private string             compositeName;
 
     private InputAction         selectedAction;
     private PlayerInputAction   playerAction;
@@ -51,6 +55,7 @@ public class KeyRebind : MonoBehaviour
     private void Start()
     {
         playerAction = GameManager.Manager.InputActions;
+        compositeId++;
 
         switch (keyToChange)
         {
@@ -61,6 +66,10 @@ public class KeyRebind : MonoBehaviour
             case GameControls.Interact:
                 selectedAction = playerAction.PlayerControls.Pickup;
                 break;
+
+            case GameControls.Switch:
+                selectedAction = playerAction.PlayerControls.Switch;
+                break;
         }
 
         UpdateText();
@@ -68,19 +77,41 @@ public class KeyRebind : MonoBehaviour
 
     public void ChangeKeyBind()
     {
-        var rebindOperation = selectedAction.PerformInteractiveRebinding()
-            .Start()
-            .OnComplete(result =>
-            {
-                Debug.LogFormat("Rebinded {0} to {1}"
-                , keyToChange.ToString()
-                , selectedAction.GetBindingDisplayString());
+        if (!isComposite)
+        {
+            var rebindOperation = selectedAction.PerformInteractiveRebinding()
+                .Start()
+                .OnComplete(result =>
+                {
+                    Debug.LogFormat("Rebinded {0} to {1}"
+                    , keyToChange.ToString()
+                    , selectedAction.GetBindingDisplayString());
 
 
-                GameManager.Manager.SavePlayerBindings();
-                UpdateText();
-                result.Dispose();
-            });
+                    GameManager.Manager.SavePlayerBindings();
+                    UpdateText();
+                    result.Dispose();
+                });
+        }
+        else
+        {
+            var bindingToChange = selectedAction.bindings[compositeId];
+
+            var rebindComposite = selectedAction.PerformInteractiveRebinding()
+                .WithTargetBinding(compositeId)
+                .Start()
+                .OnComplete(result =>
+                {
+                    Debug.LogFormat("Rebinded {0} to {1}"
+                        , bindingToChange.ToDisplayString()
+                        , selectedAction.GetBindingDisplayString(bindingIndex: compositeId));
+
+                    GameManager.Manager.SavePlayerBindings();
+                    UpdateText();
+                    result.Dispose();
+                });
+        }
+
 
         UpdateText("Press any key to rebind");
     }
@@ -104,6 +135,9 @@ public class KeyRebind : MonoBehaviour
 
     private string GetKeyDisplayName()
     {
-        return keyToChange.ToString() + ": " + selectedAction.GetBindingDisplayString();
+        if(isComposite)
+            return keyToChange.ToString() + " " + compositeName + ": " + selectedAction.GetBindingDisplayString(bindingIndex: compositeId);
+        else
+            return keyToChange.ToString() + ": " + selectedAction.GetBindingDisplayString();
     }
 }

@@ -11,8 +11,10 @@ public class Track : MonoBehaviour
     [SerializeField] private Sprite         brokenSprite;
 
     [Header("Track Life")]
+    [SerializeField] private Canvas         lifeCanvas;
     [SerializeField] private GameObject     trackLifeBar;
     [SerializeField] private Image          lifeImage;
+    [SerializeField] private Image          toolIcon;
 
     [Header("Stats")]
     [SerializeField] private int            maxHP           = 5;
@@ -24,6 +26,7 @@ public class Track : MonoBehaviour
     private bool            hasRegisteredDamage     = false;
     private Coroutine       DamageDOTTimer;
     private TrackManager    trackManager;
+    private ItemData        toolRequired;
 
     public bool IsDamaged   { get { return currHP < maxHP; } }
     public bool IsRendered  { get { return render.isVisible; } }
@@ -38,8 +41,28 @@ public class Track : MonoBehaviour
 
             train.LaunchTrain();
         }
+
+        if (collision.gameObject.tag == "Player")
+        {
+            PlayerController.OnRepairAction += RepairTrack;
+        }
     }
 
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+
+        if (collision.gameObject.tag == "Player")
+        {
+            PlayerController.OnRepairAction -= RepairTrack;
+        }
+    }
+
+    private void Start()
+    {
+        if (lifeCanvas == null) return;
+
+        lifeCanvas.worldCamera = Camera.main;
+    }
     public void Initialize(TrackManager manager)
     {
         trackManager = manager;
@@ -54,7 +77,8 @@ public class Track : MonoBehaviour
         isBroken = isDamaged;
 
         if (render != null)
-            render.sprite = (isBroken) ? brokenSprite : unbrokenSprite;
+            render.sprite = (isBroken) 
+                ? brokenSprite : unbrokenSprite;
     }
 
     private void UpdateLifeBar(bool active)
@@ -64,11 +88,20 @@ public class Track : MonoBehaviour
             lifeImage.fillAmount = (float)currHP / (float)maxHP;
             trackLifeBar.SetActive(active);
         }
+
+        if (toolIcon != null && toolRequired != null)
+            toolIcon.sprite = toolRequired.ItemSprite;
     }
 
     #region Track Action
-    public void RepairTrack()
+    public void RepairTrack(ItemData currTool)
     {
+        if(currTool.ID != toolRequired.ID)
+        {
+            trackManager.InvalidToolUsed();
+            return;
+        }
+
         currHP++;
         UpdateLifeBar(true);
 
@@ -101,6 +134,10 @@ public class Track : MonoBehaviour
             currHP = maxHP;
 
         ToggleTrack(currHP <= 0);
+
+        if (currHP == maxHP - 1)
+            DetermineRequiredTool();
+
         UpdateLifeBar(true);
 
         DamageDOTTimer = StartCoroutine(DamageOverTimeCR());
@@ -109,6 +146,11 @@ public class Track : MonoBehaviour
 
         hasRegisteredDamage = true;
         trackManager.AddDamaged(this);
+    }
+
+    private void DetermineRequiredTool()
+    {
+        toolRequired = trackManager.ToolDB.GetRandomFile();
     }
    
     #endregion

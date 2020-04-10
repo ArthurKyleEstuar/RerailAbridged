@@ -23,4 +23,11 @@ public class BaseDatabase<T> : ScriptableObject where T : BaseData
 
         return returnVal;
     }
+
+    public T GetRandomFile()
+    {
+        T returnVal = data[Random.Range(0, data.Count)];
+
+        return returnVal;
+    }
 }
