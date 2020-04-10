@@ -48,9 +48,9 @@ public class Toolbox : MonoBehaviour
             toolboxHUD.SetActive(false);
     }
 
-    private void PickedUp()
+    private void PickedUp(bool pickUp)
     {
-        if (!inInteractRange) return;
+        if (!inInteractRange || !pickUp) return;
 
         Destroy(this.gameObject);
     }

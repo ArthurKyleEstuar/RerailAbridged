@@ -50,7 +50,6 @@ public class Track : MonoBehaviour
 
     private void OnCollisionExit2D(Collision2D collision)
     {
-
         if (collision.gameObject.tag == "Player")
         {
             PlayerController.OnRepairAction -= RepairTrack;
@@ -63,6 +62,12 @@ public class Track : MonoBehaviour
 
         lifeCanvas.worldCamera = Camera.main;
     }
+
+    private void OnDisable()
+    {
+        PlayerController.OnRepairAction -= RepairTrack;
+    }
+
     public void Initialize(TrackManager manager)
     {
         trackManager = manager;
@@ -96,9 +101,24 @@ public class Track : MonoBehaviour
     #region Track Action
     public void RepairTrack(ItemData currTool)
     {
+        if (!IsDamaged) return;
+
+        if (currTool == null)
+        {
+            Debug.LogError("No Tool");
+            return;
+        }
+
+        if (toolRequired == null)
+        {
+            Debug.LogError("No required");
+            return;
+        }
+
         if(currTool.ID != toolRequired.ID)
         {
             trackManager.InvalidToolUsed();
+            Debug.LogError(currTool.ID + " " + toolRequired.ID);
             return;
         }
 

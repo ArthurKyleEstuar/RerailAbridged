@@ -33,6 +33,8 @@ public class PlayerController : MonoBehaviour
 
     private void OnDisable()
     {
+        inputAction.PlayerControls.Repair.performed -= StartRepair;
+
         inputAction.Disable();
     }
 

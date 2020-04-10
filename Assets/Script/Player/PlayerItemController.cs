@@ -22,7 +22,7 @@ public class PlayerItemController : MonoBehaviour
     private List<ItemData>                              availableTools      = new List<ItemData>();
     
     public ItemData                         CurrItem        { get { return currItem; } }
-    public static System.Action             OnPickupToolbox;
+    public static System.Action<bool>       OnPickupToolbox;
     public static System.Action<ItemData>   OnToolSwitched;
 
     private void Awake()
@@ -45,6 +45,10 @@ public class PlayerItemController : MonoBehaviour
 
     private void OnDisable()
     {
+        inputAction.Pickup.performed -= InteractToolbox;
+        inputAction.Switch.performed -= HandleToolSwitch;
+        inputAction.Switch.canceled -= HandleToolSwitch;
+
         inputAction.Disable();
         Toolbox.OnOverlap -= SetInteractable;
     }
@@ -52,6 +56,7 @@ public class PlayerItemController : MonoBehaviour
     private void Start()
     {
         if(OnToolSwitched != null) OnToolSwitched(currItem);
+        if (OnPickupToolbox != null) OnPickupToolbox(hasToolbox);
     }
 
     private void SetInteractable(bool isInteractable)
@@ -91,7 +96,7 @@ public class PlayerItemController : MonoBehaviour
 
         if (!hasToolbox)
         {
-            if (OnPickupToolbox != null) OnPickupToolbox();
+            if (OnPickupToolbox != null) OnPickupToolbox(true);
             hasToolbox = true;
         }
         else
@@ -103,6 +108,7 @@ public class PlayerItemController : MonoBehaviour
                 , toolboxSpawnPos
                 , Quaternion.identity);
 
+            if (OnPickupToolbox != null) OnPickupToolbox(false);
             hasToolbox = false;
         }
     }

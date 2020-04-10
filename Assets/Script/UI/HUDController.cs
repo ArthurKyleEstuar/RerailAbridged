@@ -1,33 +1,47 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 public class HUDController : MonoBehaviour
 {
-    [SerializeField] private GameObject     player;
-    [SerializeField] private TrackManager   trackManager;
+    [SerializeField] private GameObject         player;
+    [SerializeField] private TrackManager       trackManager;
 
     [Header("Check intervals")]
-    [SerializeField] private float          checkInterval   = 1.0f;
+    [SerializeField] private float              checkInterval   = 1.0f;
 
     [Header("Break Notifs")]
-    [SerializeField] private GameObject     leftBreakNotif;
-    [SerializeField] private GameObject     rightBreakNotif;
+    [SerializeField] private GameObject         leftBreakNotif;
+    [SerializeField] private GameObject         rightBreakNotif;
 
     [Header("Popups")]
-    [SerializeField] private GameObject     invalidToolPopup;
+    [SerializeField] private GameObject         invalidToolPopup;
 
-    [Header("Text Reference")]
-    [SerializeField] private TextMeshProUGUI currScoreText;
-    [SerializeField] private TextMeshProUGUI trainsLostText;
-    [SerializeField] private TextMeshProUGUI toolNameText;
+    [Header("Score Text")]
+    [SerializeField] private TextMeshProUGUI    currScoreText;
+    [SerializeField] private TextMeshProUGUI    trainsLostText;
+    
+    [Header("Tool Data")]
+    [SerializeField] private Image              toolImage;
+    [SerializeField] private Image              toolBoxImage;
 
     private void Awake()
     {
         GameSceneController.OnScoreUpdated  += SetScoreDisplay;
         GameSceneController.OnTrainLost     += SetTrainsLost;
         PlayerItemController.OnToolSwitched += SetToolDisplay;
+        PlayerItemController.OnPickupToolbox += SetHasToolboxDisplay;
         TrackManager.OnInvalidToolUsed += SetInvalidToolPopup;
+    }
+
+    private void OnDisable()
+    {
+        GameSceneController.OnScoreUpdated -= SetScoreDisplay;
+        GameSceneController.OnTrainLost -= SetTrainsLost;
+        PlayerItemController.OnToolSwitched -= SetToolDisplay;
+        PlayerItemController.OnPickupToolbox -= SetHasToolboxDisplay;
+        TrackManager.OnInvalidToolUsed -= SetInvalidToolPopup;
     }
 
     private void Start()
@@ -70,9 +84,16 @@ public class HUDController : MonoBehaviour
 
     private void SetToolDisplay(ItemData currTool)
     {
-        if (toolNameText == null) return;
+        if (toolImage == null) return;
 
-        toolNameText.text = "Tool Equipped: " + currTool.ItemName;
+        toolImage.sprite = currTool.ItemSprite;
+    }
+
+    private void SetHasToolboxDisplay(bool hasToolbox)
+    {
+        if (toolBoxImage == null) return;
+
+        toolBoxImage.gameObject.SetActive(hasToolbox);
     }
 
     //Do this by interval to reduce load on Update
