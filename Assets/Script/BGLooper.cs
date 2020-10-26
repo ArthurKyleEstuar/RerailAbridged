@@ -11,12 +11,12 @@ public class BGLooper : MonoBehaviour
 
     void Start()
     {
-        
-
         for(int i = 0; i < bgCount; i++)
         {
             Vector3 spawnPos = Vector3.zero;
             spawnPos.x += (i * bgSize);
+            
+            if(bgPrefab == null) return;
             
             GameObject go = Instantiate(bgPrefab, parent: this.transform);
             go.transform.localPosition = spawnPos;
