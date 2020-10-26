@@ -19,6 +19,9 @@ public class AudioObject : MonoBehaviour
         aFile = fileToLoad;
 
         aSource = this.gameObject.AddComponent<AudioSource>();
+        
+        if(aSource == null) return; 
+        
         aSource.clip = aFile.AudioClip;
         aSource.outputAudioMixerGroup = AudioManager.Manager.Mixer.FindMatchingGroups(aFile.MixGroup)[0];
         aSource.volume = aFile.Volume;
@@ -28,6 +31,7 @@ public class AudioObject : MonoBehaviour
 
     public void Play()
     {
+        if(aSource == null) return; 
         aSource.Play();
     }
 }
