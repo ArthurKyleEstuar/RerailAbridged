@@ -104,7 +104,7 @@ public class TrackManager : MonoBehaviour
     
     public void InvalidToolUsed()
     {
-        if (OnInvalidToolUsed != null) OnInvalidToolUsed(true);
+        OnInvalidToolUsed?.Invoke(true);
     }
   
 }

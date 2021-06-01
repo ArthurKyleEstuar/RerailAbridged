@@ -55,8 +55,8 @@ public class PlayerItemController : MonoBehaviour
 
     private void Start()
     {
-        if(OnToolSwitched != null) OnToolSwitched(currItem);
-        if (OnPickupToolbox != null) OnPickupToolbox(hasToolbox);
+        OnToolSwitched?.Invoke(currItem);
+        OnPickupToolbox?.Invoke(hasToolbox);
     }
 
     private void SetInteractable(bool isInteractable)
@@ -87,7 +87,7 @@ public class PlayerItemController : MonoBehaviour
 
         currItem = availableTools[currItemIndex];
 
-        if (OnToolSwitched != null) OnToolSwitched(currItem);
+        OnToolSwitched?.Invoke(currItem);
     }
 
     private void InteractToolbox(InputAction.CallbackContext obj)
@@ -96,7 +96,7 @@ public class PlayerItemController : MonoBehaviour
 
         if (!hasToolbox)
         {
-            if (OnPickupToolbox != null) OnPickupToolbox(true);
+            OnPickupToolbox?.Invoke(true);
             hasToolbox = true;
         }
         else
@@ -108,7 +108,7 @@ public class PlayerItemController : MonoBehaviour
                 , toolboxSpawnPos
                 , Quaternion.identity);
 
-            if (OnPickupToolbox != null) OnPickupToolbox(false);
+            OnPickupToolbox?.Invoke(false);
             hasToolbox = false;
         }
     }

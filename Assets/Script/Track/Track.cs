@@ -33,16 +33,18 @@ public class Track : MonoBehaviour
     
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.tag == "Train" && isBroken)
+		GameObject otherObj = collision.gameObject;
+		
+        if (IsTargetTag("Train", otherObj.tag) && isBroken)
         {
-            Train train = collision.gameObject.GetComponent<Train>();
+            Train train = otherObj.GetComponent<Train>();
 
             if (train == null) return;
 
             train.LaunchTrain();
         }
 
-        if (collision.gameObject.tag == "Player")
+        if (IsTargetTag("Player", otherObj.tag))
         {
             PlayerController.OnRepairAction += RepairTrack;
         }
@@ -50,12 +52,16 @@ public class Track : MonoBehaviour
 
     private void OnCollisionExit2D(Collision2D collision)
     {
-        if (collision.gameObject.tag == "Player")
+        if (IsTargetTag("Player", collision.gameObject.tag))
         {
             PlayerController.OnRepairAction -= RepairTrack;
         }
     }
-
+	
+	private bool IsTargetTag(string targetTag, string otherTag)
+	{
+		return otherTag == targetTag;
+	}
     private void Start()
     {
         if (lifeCanvas == null) return;
@@ -90,6 +96,7 @@ public class Track : MonoBehaviour
     {
         if (lifeImage != null && trackLifeBar != null)
         {
+			//Force float division to not round up result
             lifeImage.fillAmount = (float)currHP / (float)maxHP;
             trackLifeBar.SetActive(active);
         }
@@ -101,7 +108,7 @@ public class Track : MonoBehaviour
     #region Track Action
     public void RepairTrack(ItemData currTool)
     {
-        if (!IsDamaged) return;
+        if (!IsDamaged || trackManager == null) return;
 
         if (currTool == null)
         {
@@ -170,6 +177,8 @@ public class Track : MonoBehaviour
 
     private void DetermineRequiredTool()
     {
+		if(trackManager == null) return;
+		
         toolRequired = trackManager.ToolDB.GetRandomFile();
     }
    

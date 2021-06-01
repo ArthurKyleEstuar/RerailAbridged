@@ -22,9 +22,9 @@ public class Toolbox : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "Player" && toolboxHUD != null)
+        if (IsPlayerTag(collision.gameObject.tag) && toolboxHUD != null)
         {
-            if (OnOverlap != null) OnOverlap(true);
+            OnOverlap?.Invoke(true);
 
             inInteractRange = true;
             toolboxHUD.SetActive(true);
@@ -33,14 +33,19 @@ public class Toolbox : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "Player" && toolboxHUD != null)
+        if (IsPlayerTag(collision.gameObject.tag) && toolboxHUD != null)
         {
-            if (OnOverlap != null) OnOverlap(false);
+            OnOverlap?.Invoke(false);
 
             inInteractRange = false;
             toolboxHUD.SetActive(false);
         }
     }
+	
+	private bool IsPlayerTag(string otherTag)
+	{
+		return otherTag == "Player";
+	}
 
     private void Start()
     {

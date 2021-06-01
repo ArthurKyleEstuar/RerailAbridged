@@ -8,7 +8,7 @@ public class PlayerAnim : MonoBehaviour
     [SerializeField] private Animator   animator;
 
     private bool    isMovingRight;
-    Vector3         newRot          = Vector3.zero;
+    private Vector3 newRot          = Vector3.zero;
 
     private void FixedUpdate()
     {
